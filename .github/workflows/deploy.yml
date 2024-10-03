@@ -1,0 +1,71 @@
+name: CI/CD for Node.js App
+
+on:
+  push:
+    branches:
+      - develop
+      - release
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-versions: '16'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests (optional)
+        run: |
+          echo "Running tests..."
+          # Test commands
+
+    deploy-dev:
+      needs: build
+      runs-on: ubuntu-latest
+      if: github.ref == 'refs/heads/develop'
+      environment: development
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+
+        - name: Deploy to Development
+          run: |
+            echo ":Deploying to Development"
+            # Test commands
+
+    deploy-staging:
+      needs: build
+      runs-on: ubuntu-latest
+      if: github.ref == 'refs/heads/release'
+      environment: staging
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+
+        - name: Deploy to Staging
+          run: |
+            echo ":Deploying to Staging"
+            # Test commands
+
+    deploy-prod:
+      needs: build
+      runs-on: ubuntu-latest
+      if: github.ref == 'refs/heads/main'
+      environment: production
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+
+        - name: Deploy to Production
+          run: |
+            echo ":Deploying to Production"
+            # Test commands
+
